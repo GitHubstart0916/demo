@@ -20,9 +20,9 @@ if %num% EQU 0 (
 )
 if %num% EQU 2 (
     cd %source_path%
-    if %1=="-c" (
+    if "%1"=="-c" (
         git push --set-upstream origin %2
-    ) else if %1=="-f" (
+    ) else if "%1"=="-f" (
         git push -f %2
     ) else (
         echo param error, create branch use -c and force to push use -f
