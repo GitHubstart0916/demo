@@ -21,13 +21,13 @@ func ReadConfig() {
 }
 
 func ConnectDB() {
-	//mysqlStr := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s",
-	//	viper.GetString("DatabaseUser"),
-	//	viper.GetString("DatabasePassword"),
-	//	viper.GetString("DatabaseHost"),
-	//	viper.GetInt("DatabasePort"),
-	//	viper.GetString("DatabaseName"))
-	mysqlStr := "root:lyw002mysql@tcp(101.43.145.90:3306)/demo"
+	mysqlStr := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s",
+		viper.GetString("DatabaseUser"),
+		viper.GetString("DatabasePassword"),
+		viper.GetString("DatabaseHost"),
+		viper.GetInt("DatabasePort"),
+		viper.GetString("DatabaseName"))
+	//mysqlStr := "root:lyw002mysql@tcp(101.43.145.90:3306)/demo"
 	DB, err := sqlx.Open("mysql", mysqlStr)
 	if err != nil {
 		panic(err)
@@ -36,7 +36,7 @@ func ConnectDB() {
 }
 
 func main() {
-	//ReadConfig()
+	ReadConfig()
 	ConnectDB()
 
 	global.Router = gin.Default()
