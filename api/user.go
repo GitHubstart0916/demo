@@ -15,6 +15,15 @@ type RegisterRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
+// @Summary 用户注册
+// @Description 用户注册
+// @ID user-register
+// @Accept  json
+// @Produce json
+// @Param  responseInfo body RegisterRequest true "待添加的回复信息"
+// @Success 200 {string} string "注册成功"
+// @Failure default {string} string "注册失败"
+// @Router /user/register [post]
 func registerEndpoint(c *gin.Context) {
 	var req RegisterRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
