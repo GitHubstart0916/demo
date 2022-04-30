@@ -1,0 +1,6 @@
+# mysql
+DatabaseHost: 101.43.145.90
+DatabasePort: 3306
+DatabaseUser: root
+DatabasePassword: lyw002mysql
+DatabaseName: demo
