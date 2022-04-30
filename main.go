@@ -27,7 +27,6 @@ func ConnectDB() {
 		viper.GetString("DatabaseHost"),
 		viper.GetInt("DatabasePort"),
 		viper.GetString("DatabaseName"))
-	//mysqlStr := "root:lyw002mysql@tcp(101.43.145.90:3306)/demo"
 	DB, err := sqlx.Open("mysql", mysqlStr)
 	if err != nil {
 		panic(err)
