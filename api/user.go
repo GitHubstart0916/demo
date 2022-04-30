@@ -15,6 +15,7 @@ type RegisterRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
+// ShowAccount godoc
 // @Summary 用户注册
 // @Description 用户注册
 // @ID user-register
@@ -24,6 +25,7 @@ type RegisterRequest struct {
 // @Success 200 {string} string "注册成功"
 // @Failure default {string} string "注册失败"
 // @Router /user/register [post]
+// @Security ApiKeyAuth
 func registerEndpoint(c *gin.Context) {
 	var req RegisterRequest
 	if err := c.ShouldBindJSON(&req); err != nil {

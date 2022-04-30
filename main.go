@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/FREE-WE-1/backend/api"
+	_ "github.com/FREE-WE-1/backend/docs"
 	"github.com/FREE-WE-1/backend/global"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
