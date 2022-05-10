@@ -16,8 +16,8 @@ type RegisterRequest struct {
 }
 
 type RegisterResponse struct {
-	Code int
-	Text string
+	Code int    `json:"code"`
+	Text string `json:"text"`
 }
 
 // ShowAccount godoc
@@ -28,7 +28,7 @@ type RegisterResponse struct {
 // @Produce json
 // @Param  responseInfo body RegisterRequest true "待添加信息"
 // @Success 200 {object} RegisterResponse
-// @Failure default {string} string "注册失败"
+// @Failure default {object} RegisterResponse
 // @Router /user/register [post]
 // @Security ApiKeyAuth
 func registerEndpoint(c *gin.Context) {
@@ -43,7 +43,10 @@ func registerEndpoint(c *gin.Context) {
 	if err != nil {
 		errInfo, _ := err.(*mysql.MySQLError)
 		if errInfo.Number == utils.MysqlDuplicateErr {
-			c.String(http.StatusBadRequest, "用户名已存在")
+			c.JSON(http.StatusBadRequest, RegisterResponse{
+				Code: 1,
+				Text: "用户名已存在",
+			})
 			return
 		} else {
 			panic(err)
@@ -103,7 +106,7 @@ func loginEndpoint(c *gin.Context) {
 	}
 
 	token := utils.GenerateToken()
-	c.JSON(http.StatusAccepted, LoginResponse{
+	c.JSON(http.StatusOK, LoginResponse{
 		Code:  0,
 		Token: token,
 	})
@@ -111,5 +114,5 @@ func loginEndpoint(c *gin.Context) {
 
 func logoutEndpoint(c *gin.Context) {
 	//TODO:是否需要logout接口
-	c.String(http.StatusAccepted, "logout")
+	c.String(http.StatusOK, "logout")
 }
