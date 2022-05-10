@@ -66,8 +66,8 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
-	Code  int
-	Token string
+	Code  int    `json:"code"`
+	Token string `json:"token"`
 }
 
 func loginEndpoint(c *gin.Context) {
