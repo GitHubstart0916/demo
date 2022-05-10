@@ -15,14 +15,19 @@ type RegisterRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
+type RegisterResponse struct {
+	Code int
+	Text string
+}
+
 // ShowAccount godoc
 // @Summary 用户注册
 // @Description 用户注册
 // @ID user-register
 // @Accept  json
 // @Produce json
-// @Param  responseInfo body RegisterRequest true "待添加的回复信息"
-// @Success 200 {string} string "注册成功"
+// @Param  responseInfo body RegisterRequest true "待添加信息"
+// @Success 200 {object} RegisterResponse
 // @Failure default {string} string "注册失败"
 // @Router /user/register [post]
 // @Security ApiKeyAuth
@@ -45,12 +50,21 @@ func registerEndpoint(c *gin.Context) {
 		}
 	}
 
-	c.String(http.StatusOK, "注册成功")
+	//c.String(http.StatusOK, "注册成功")
+	c.JSON(http.StatusOK, RegisterResponse{
+		Code: 0,
+		Text: "注册成功",
+	})
 }
 
 type LoginRequest struct {
 	UserName string `json:"userName" binding:"required"`
 	Password string `json:"password" binding:"required"`
+}
+
+type LoginResponse struct {
+	Code  int
+	Token string
 }
 
 func loginEndpoint(c *gin.Context) {
@@ -81,11 +95,18 @@ func loginEndpoint(c *gin.Context) {
 	}
 
 	if !hasUser || (hasUser && !pwdTrue) {
-		c.String(http.StatusBadRequest, "用户名或密码错误")
+		c.JSON(http.StatusBadRequest, LoginResponse{
+			Code:  1,
+			Token: "error",
+		})
 		return
 	}
 
-	c.String(http.StatusAccepted, "登录成功")
+	token := utils.GenerateToken()
+	c.JSON(http.StatusAccepted, LoginResponse{
+		Code:  0,
+		Token: token,
+	})
 }
 
 func logoutEndpoint(c *gin.Context) {
