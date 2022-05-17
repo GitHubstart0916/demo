@@ -106,6 +106,11 @@ func loginEndpoint(c *gin.Context) {
 	}
 
 	token := utils.GenerateToken()
+	//fmt.Println(UserData)
+	//global.RedisClient.Set(c, token, UserData, 0)
+	//fmt.Println(global.RedisClient.Get(c, token))
+	utils.LoginSession(c, token, UserData)
+
 	c.JSON(http.StatusOK, LoginResponse{
 		Code:  0,
 		Token: token,
@@ -114,5 +119,8 @@ func loginEndpoint(c *gin.Context) {
 
 func logoutEndpoint(c *gin.Context) {
 	//TODO:是否需要logout接口
+	token := c.GetString("Token")
+	utils.LogoutSession(c, token)
 	c.String(http.StatusOK, "logout")
+
 }

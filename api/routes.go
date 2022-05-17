@@ -1,6 +1,9 @@
 package api
 
-import "github.com/FREE-WE-1/backend/global"
+import (
+	"github.com/FREE-WE-1/backend/global"
+	"github.com/FREE-WE-1/backend/utils"
+)
 
 func InitRoutes() {
 
@@ -11,5 +14,11 @@ func InitRoutes() {
 		user.POST("/login", loginEndpoint)
 		user.POST("/logout", logoutEndpoint)
 		user.POST("/register", registerEndpoint)
+	}
+
+	test := global.Router.Group("test")
+	test.Use(utils.AuthRequired)
+	{
+		test.GET("/get-user-id", getUserIdEndpoint)
 	}
 }

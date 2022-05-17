@@ -4,3 +4,8 @@ DatabasePort: 3306
 DatabaseUser: root
 DatabasePassword: lyw002mysql
 DatabaseName: demo
+
+# Redis
+RedisAddress: 101.43.145.90:6379
+RedisPassword: fjy20010517redis
+RedisDatabase: 0
