@@ -2,6 +2,7 @@ package api
 
 import (
 	"database/sql"
+	"fmt"
 	"github.com/FREE-WE-1/backend/global"
 	"github.com/FREE-WE-1/backend/models"
 	"github.com/FREE-WE-1/backend/utils"
@@ -87,6 +88,8 @@ func loginEndpoint(c *gin.Context) {
 	hasUser := false
 	pwdTrue := false
 
+	fmt.Println(err)
+
 	switch err {
 	case nil:
 		hasUser = true
@@ -123,4 +126,13 @@ func logoutEndpoint(c *gin.Context) {
 	utils.LogoutSession(c, token)
 	c.String(http.StatusOK, "logout")
 
+}
+
+type StateResponse struct {
+	UserId string `json:"userid" binding:"required"`
+	State  int    `json:"state" binding:"required"`
+}
+
+func get_user_state(c *gin.Context) {
+	c.String(http.StatusOK, "1:正常登录")
 }

@@ -21,4 +21,13 @@ func InitRoutes() {
 	{
 		test.GET("/get-user-id", getUserIdEndpoint)
 	}
+
+	Map := global.Router.Group("/map")
+	Map.Use(utils.AuthRequired)
+	{
+		Map.GET("/get-user-id", getUserIdEndpoint)
+		Map.GET("/create-map", create_map)
+		Map.GET("/get-map-data", get_map_data)
+	}
+
 }
