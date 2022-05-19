@@ -6,6 +6,7 @@ import (
 	"github.com/FREE-WE-1/backend/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"os/exec"
 	"strconv"
 )
 
@@ -123,7 +124,6 @@ func modify_map(c *gin.Context) {
 	default:
 		panic(err)
 	}
-	//TODO:重命名地图文件
 }
 
 type GetGoodsRequest struct {
@@ -176,8 +176,11 @@ func delet_map(c *gin.Context) {
 			Code: 0,
 			Text: "删除成功",
 		})
+		mapPath := MapData.Path
+		mapId := MapData.Id
+		_ = exec.Command("rm", "-f", mapPath+"/"+strconv.Itoa(mapId)+".pgm")
+		_ = exec.Command("rm", "-f", mapPath+"/"+strconv.Itoa(mapId)+".yaml")
 	default:
 		panic(err)
 	}
-	//TODO:删除地图文件
 }
