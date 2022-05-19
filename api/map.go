@@ -88,11 +88,42 @@ func open_map(c *gin.Context) {
 
 type ModifyMapRequest struct {
 	MapId   string `json:"mapid" binding:"required"`
-	NewPath string `json:"mapid" binding:"required"`
+	MapName string `json:"mapname" binding:"required"`
 }
 
 func modify_map(c *gin.Context) {
 	//TODO 修改地图信息
+	var mmap ModifyMapRequest
+	if err := c.ShouldBindJSON(&mmap); err != nil {
+		c.String(http.StatusBadRequest, "解析出错："+err.Error())
+		return
+	}
+	hasMap := false
+	var MapData models.Map
+	err := global.DatabaseConnection.Get(&MapData, "SELECT * FROM Map WHERE id = ?", mmap.MapId)
+	switch err {
+	case nil:
+		hasMap = true
+	case sql.ErrNoRows:
+		hasMap = false
+	default:
+		panic(err)
+	}
+	if !hasMap {
+		c.JSON(http.StatusBadRequest, LoginResponse{})
+		return
+	}
+
+	_, err = global.DatabaseConnection.Exec("UPDATE Map SET name = ? WHERE id = ?", mmap.MapName, mmap.MapId)
+	switch err {
+	case nil:
+		c.JSON(http.StatusOK, RegisterResponse{
+			Code: 0,
+			Text: "修改成功",
+		})
+	default:
+		panic(err)
+	}
 }
 
 type GetGoodsRequest struct {
