@@ -28,6 +28,8 @@ func InitRoutes() {
 		Map.GET("/get-user-id", getUserIdEndpoint)
 		Map.GET("/create-map", create_map)
 		Map.GET("/get-map-data", get_map_data)
+		Map.GET("/modify-map", modify_map)
+		Map.GET("/delet-map", delet_map)
 	}
 
 }

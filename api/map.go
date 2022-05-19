@@ -113,7 +113,6 @@ func modify_map(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, LoginResponse{})
 		return
 	}
-
 	_, err = global.DatabaseConnection.Exec("UPDATE Map SET name = ? WHERE id = ?", mmap.MapName, mmap.MapId)
 	switch err {
 	case nil:
@@ -124,6 +123,7 @@ func modify_map(c *gin.Context) {
 	default:
 		panic(err)
 	}
+	//TODO:重命名地图文件
 }
 
 type GetGoodsRequest struct {
@@ -138,4 +138,46 @@ func get_goods(c *gin.Context) {
 	}
 
 	//TODO ROS
+}
+
+type DeletMapRequest struct {
+	MapId string `json:"mapid" binding:"required"`
+}
+
+func delet_map(c *gin.Context) {
+	var dmap DeletMapRequest
+	if err := c.ShouldBindJSON(&dmap); err != nil {
+		c.String(http.StatusBadRequest, "解析出错："+err.Error())
+		return
+	}
+
+	var MapData models.Map
+	err := global.DatabaseConnection.Get(&MapData, "SELECT * FROM Map WHERE id = ?", dmap.MapId)
+	hasMap := false
+	switch err {
+	case nil:
+		hasMap = true
+	case sql.ErrNoRows:
+		hasMap = false
+	default:
+		panic(err)
+	}
+	if !hasMap {
+		c.JSON(http.StatusBadRequest, LoginResponse{
+			Code:  1,
+			Token: "error",
+		})
+		return
+	}
+	_, err = global.DatabaseConnection.Exec("DELETE FROM Map WHERE id = ?", dmap.MapId)
+	switch err {
+	case nil:
+		c.JSON(http.StatusOK, RegisterResponse{
+			Code: 0,
+			Text: "删除成功",
+		})
+	default:
+		panic(err)
+	}
+	//TODO:删除地图文件
 }
