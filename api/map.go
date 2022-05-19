@@ -85,6 +85,27 @@ type OpenMapResponse struct {
 
 func open_map(c *gin.Context) {
 	//TODO 返回图片和节点信息
+	var omap OpenMapRequest
+	if err := c.ShouldBindJSON(&omap); err != nil {
+		c.String(http.StatusBadRequest, "解析出错："+err.Error())
+		return
+	}
+	hasMap := false
+	var MapData models.Map
+	err := global.DatabaseConnection.Get(&MapData, "SELECT * FROM Map WHERE id = ?", omap.MapId)
+	switch err {
+	case nil:
+		hasMap = true
+	case sql.ErrNoRows:
+		hasMap = false
+	default:
+		panic(err)
+	}
+	if !hasMap {
+		c.JSON(http.StatusBadRequest, LoginResponse{})
+		return
+	}
+	//TODO:获取Nodes和文件
 }
 
 type ModifyMapRequest struct {
