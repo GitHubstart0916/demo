@@ -9,6 +9,17 @@ import (
 	"strconv"
 )
 
+// ShowAccount godoc
+// @Summary 建立地图
+// @Description 建立地图
+// @ID create-map
+// @Accept  json
+// @Produce json
+// @Param
+// @Success 200 {object}
+// @Failure default {object}
+// @Router /map/create-map [post]
+// @Security ApiKeyAuth
 func create_map(c *gin.Context) {
 	//todo redis
 	//调用ROS api
@@ -38,6 +49,17 @@ type GetMapdataResponse struct {
 	Count string `json:"count" binding:"required"`
 }
 
+// ShowAccount godoc
+// @Summary 查询地图状态
+// @Description 查询地图状态
+// @ID get-map-data
+// @Accept  json
+// @Produce json
+// @Param  body GetMapdataRequest
+// @Success 200 {object} GetMapdataResponse
+// @Failure default {object} GetMapdataResponse
+// @Router /map/get-map-data [post]
+// @Security ApiKeyAuth
 func get_map_data(c *gin.Context) {
 
 	user_id := c.GetInt("UserId")
