@@ -2,4 +2,6 @@
 
 docs
 
-swag
+swag*
+
+go.mod
