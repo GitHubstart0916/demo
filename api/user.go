@@ -71,6 +71,17 @@ type LoginResponse struct {
 	Token string `json:"token"`
 }
 
+// ShowAccount godoc
+// @Summary 用户登录
+// @Description 用户登录
+// @ID user-login
+// @Accept  json
+// @Produce json
+// @Param  responseInfo body LoginRequest true "待添加信息"
+// @Success 200 {object} LoginResponse
+// @Failure default {object} LoginResponse
+// @Router /user/login [post]
+// @Security ApiKeyAuth
 func loginEndpoint(c *gin.Context) {
 	// c.String(http.StatusAccepted, "login")
 	var req LoginRequest
@@ -120,6 +131,16 @@ func loginEndpoint(c *gin.Context) {
 	})
 }
 
+// ShowAccount godoc
+// @Summary 用户登出
+// @Description 用户登出
+// @ID user-logout
+// @Accept  json
+// @Produce json
+// @Success 200 {string} string "todo"
+// @Failure default {string} string "todo"
+// @Router /user/logout [post]
+// @Security ApiKeyAuth
 func logoutEndpoint(c *gin.Context) {
 	//TODO:是否需要logout接口
 	token := c.GetString("Token")

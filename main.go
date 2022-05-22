@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/FREE-WE-1/backend/api"
+	_ "github.com/FREE-WE-1/backend/docs"
 	"github.com/FREE-WE-1/backend/global"
 	"github.com/FREE-WE-1/backend/utils"
 	"github.com/gin-contrib/cors"

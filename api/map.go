@@ -16,9 +16,8 @@ import (
 // @ID create-map
 // @Accept  json
 // @Produce json
-// @Param
-// @Success 200 {object}
-// @Failure default {object}
+// @Success 200 {string} string "服务器错误信息"
+// @Failure default {string} string "服务器错误信息"
 // @Router /map/create-map [post]
 // @Security ApiKeyAuth
 func create_map(c *gin.Context) {
@@ -56,9 +55,9 @@ type GetMapdataResponse struct {
 // @ID get-map-data
 // @Accept  json
 // @Produce json
-// @Param  body GetMapdataRequest
-// @Success 200 {object} GetMapdataResponse
-// @Failure default {object} GetMapdataResponse
+// @Param  responseInfo body GetMapdataRequest true "DO"
+// @Success 200 {Object} GetMapdataResponse
+// @Failure default {Object} GetMapdataResponse
 // @Router /map/get-map-data [post]
 // @Security ApiKeyAuth
 func get_map_data(c *gin.Context) {
