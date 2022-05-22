@@ -16,7 +16,7 @@ func InitRoutes() {
 		user.POST("/register", registerEndpoint)
 		//user.POST("/forget-password", forget_password)
 		//user.POST("/reset-password", reset_password)
-		//user.GET("/get-user-state", get_user_state)
+		//user.GET("/get-user-state", utils.AuthMiddleware, get_user_state)
 	}
 
 	test := global.Router.Group("test")
