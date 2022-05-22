@@ -134,6 +134,17 @@ type ModifyMapRequest struct {
 	MapName string `json:"mapname" binding:"required"`
 }
 
+// ShowAccount godoc
+// @Summary 修改地图信息
+// @Description 修改地图信息
+// @ID modify_map
+// @Accept  json
+// @Produce json
+// @Param  responseInfo body ModifyMapRequest true "待修改信息"
+// @Success 200 {Object} LoginResponse
+// @Failure default {Object} LoginResponse
+// @Router /map/modify-map [post]
+// @Security ApiKeyAuth
 func modify_map(c *gin.Context) {
 	//TODO 修改地图信息
 	var mmap ModifyMapRequest
