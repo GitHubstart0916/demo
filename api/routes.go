@@ -14,6 +14,9 @@ func InitRoutes() {
 		user.POST("/login", loginEndpoint)
 		user.POST("/logout", logoutEndpoint)
 		user.POST("/register", registerEndpoint)
+		//user.POST("/forget-password", forget_password)
+		//user.POST("/reset-password", reset_password)
+		//user.GET("/get-user-state", get_user_state)
 	}
 
 	test := global.Router.Group("test")
@@ -28,8 +31,17 @@ func InitRoutes() {
 		Map.GET("/get-user-id", getUserIdEndpoint)
 		Map.GET("/create-map", create_map)
 		Map.GET("/get-map-data", get_map_data)
-		Map.GET("/modify-map", modify_map)
+		Map.POST("/open-map", open_map)
+		Map.POST("/modify-map", modify_map)
+		Map.POST("/get-goods", get_goods)
 		Map.GET("/delet-map", delet_map)
 	}
-
+	System := global.Router.Group("/system")
+	System.Use(utils.AuthRequired)
+	{
+		//System.GET("/reset", reset)
+		//System.GET("/update", update)
+		//System.GET("/get-update-list", get_update_list)
+		//System.GET("/update-part", update_part)
+	}
 }

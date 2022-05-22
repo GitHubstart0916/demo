@@ -10,6 +10,11 @@ import (
 	"strconv"
 )
 
+type StandardResponse struct {
+	Code  int    `json:"code"`
+	Token string `json:"token"`
+}
+
 // ShowAccount godoc
 // @Summary 建立地图
 // @Description 建立地图
@@ -123,7 +128,7 @@ func open_map(c *gin.Context) {
 		panic(err)
 	}
 	if !hasMap {
-		c.JSON(http.StatusBadRequest, LoginResponse{})
+		c.JSON(http.StatusBadRequest, "地图未找到")
 		return
 	}
 	//TODO:获取Nodes和文件
@@ -141,8 +146,8 @@ type ModifyMapRequest struct {
 // @Accept  json
 // @Produce json
 // @Param  responseInfo body ModifyMapRequest true "待修改信息"
-// @Success 200 {Object} LoginResponse
-// @Failure default {Object} LoginResponse
+// @Success 200 "修改地图成功"
+// @Failure default {string} string "错误信息"
 // @Router /map/modify-map [post]
 // @Security ApiKeyAuth
 func modify_map(c *gin.Context) {
@@ -164,16 +169,13 @@ func modify_map(c *gin.Context) {
 		panic(err)
 	}
 	if !hasMap {
-		c.JSON(http.StatusBadRequest, LoginResponse{})
+		c.String(http.StatusOK, "地图未找到")
 		return
 	}
 	_, err = global.DatabaseConnection.Exec("UPDATE Map SET name = ? WHERE id = ?", mmap.MapName, mmap.MapId)
 	switch err {
 	case nil:
-		c.JSON(http.StatusOK, RegisterResponse{
-			Code: 0,
-			Text: "修改成功",
-		})
+		c.String(http.StatusOK, "修改地图成功")
 	default:
 		panic(err)
 	}
@@ -204,8 +206,8 @@ type DeletMapRequest struct {
 // @Accept  json
 // @Produce json
 // @Param  responseInfo body DeletMapRequest true "地图ID"
-// @Success 200 {Object} RegisterResponse
-// @Failure default {Object} RegisterResponse
+// @Success 200 {string} string "服务器错误信息"
+// @Failure default {string} string "服务器错误信息"
 // @Router /map/delet-map [post]
 // @Security ApiKeyAuth
 func delet_map(c *gin.Context) {
