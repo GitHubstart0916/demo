@@ -197,6 +197,17 @@ type DeletMapRequest struct {
 	MapId string `json:"mapid" binding:"required"`
 }
 
+// ShowAccount godoc
+// @Summary 删除地图
+// @Description 删除地图
+// @ID delet_map
+// @Accept  json
+// @Produce json
+// @Param  responseInfo body DeletMapRequest true "地图ID"
+// @Success 200 {Object} RegisterResponse
+// @Failure default {Object} RegisterResponse
+// @Router /map/delet-map [post]
+// @Security ApiKeyAuth
 func delet_map(c *gin.Context) {
 	var dmap DeletMapRequest
 	if err := c.ShouldBindJSON(&dmap); err != nil {
