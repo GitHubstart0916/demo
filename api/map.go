@@ -108,7 +108,7 @@ type OpenMapRequest struct {
 }
 
 type OpenMapResponse struct {
-	NodeList [...]int32 `json:"nodelist" binding:"required"`
+	NodeList []int32 `json:"nodelist" binding:"required"`
 }
 
 func open_map(c *gin.Context) {
