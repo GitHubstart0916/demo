@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"github.com/FREE-WE-1/backend/global"
 	"github.com/FREE-WE-1/backend/models"
+	"github.com/FREE-WE-1/backend/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"os/exec"
@@ -128,7 +129,7 @@ func open_map(c *gin.Context) {
 		panic(err)
 	}
 	if !hasMap {
-		c.JSON(http.StatusBadRequest, "地图未找到")
+		c.JSON(utils.FindNoMapErr, "地图未找到")
 		return
 	}
 	//TODO:获取Nodes和文件
@@ -169,7 +170,7 @@ func modify_map(c *gin.Context) {
 		panic(err)
 	}
 	if !hasMap {
-		c.String(http.StatusOK, "地图未找到")
+		c.String(utils.FindNoMapErr, "地图未找到")
 		return
 	}
 	_, err = global.DatabaseConnection.Exec("UPDATE Map SET name = ? WHERE id = ?", mmap.MapName, mmap.MapId)
@@ -206,7 +207,7 @@ type DeletMapRequest struct {
 // @Accept  json
 // @Produce json
 // @Param  responseInfo body DeletMapRequest true "地图ID"
-// @Success 200 {string} string "服务器错误信息"
+// @Success 200 "地图删除成功"
 // @Failure default {string} string "服务器错误信息"
 // @Router /map/delet-map [post]
 // @Security ApiKeyAuth
@@ -238,10 +239,7 @@ func delet_map(c *gin.Context) {
 	_, err = global.DatabaseConnection.Exec("DELETE FROM Map WHERE id = ?", dmap.MapId)
 	switch err {
 	case nil:
-		c.JSON(http.StatusOK, RegisterResponse{
-			Code: 0,
-			Text: "删除成功",
-		})
+		c.String(http.StatusOK, "地图删除成功")
 		mapPath := MapData.Path
 		mapId := MapData.Id
 		_ = exec.Command("rm", "-f", mapPath+"/"+strconv.Itoa(mapId)+".pgm")
