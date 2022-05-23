@@ -52,7 +52,7 @@ func main() {
 	ReadConfig()
 	ConnectDB()
 	initRedis()
-	stringA := []string{"hbhdfjy@163.com"}
+	stringA := []string{"18375200@buaa.edu.cn"}
 	_, err := models.SendEmailValidate(stringA)
 	if err != nil {
 		print(err.Error())

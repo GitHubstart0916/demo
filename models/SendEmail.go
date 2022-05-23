@@ -41,11 +41,6 @@ func SendEmailValidate(em []string) (string, error) {
 	return vCode, err
 }
 
-// GetValidateCode
-// @Title GetValidateCode
-// @Description  发送邮箱验证码 并存入redis（5分钟有效时间）
-// @Author hyy 2022-03-05 18:18:47
-// @Param c type description
 func GetValidateCode(c *gin.Context) {
 	// 获取目的邮箱
 	em := []string{c.Param("email")}
