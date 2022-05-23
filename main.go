@@ -3,18 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/FREE-WE-1/backend/api"
 	_ "github.com/FREE-WE-1/backend/docs"
 	"github.com/FREE-WE-1/backend/global"
-	"github.com/FREE-WE-1/backend/utils"
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
+	"github.com/FREE-WE-1/backend/models"
 	"github.com/go-redis/redis/v8"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/spf13/viper"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func ReadConfig() {
@@ -57,20 +52,25 @@ func main() {
 	ReadConfig()
 	ConnectDB()
 	initRedis()
+	stringA := []string{"hbhdfjy@163.com"}
+	_, err := models.SendEmailValidate(stringA)
+	if err != nil {
+		print(err.Error())
+	}
 
-	global.Router = gin.Default()
-
-	// Swagger configuration
-	url := ginSwagger.URL("/swagger/doc.json") // The url pointing to API definition
-	global.Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
-
-	corsConfig := cors.DefaultConfig()
-	corsConfig.AllowAllOrigins = true
-	corsConfig.AllowHeaders = append(corsConfig.AllowHeaders, utils.TokenHeaderName)
-	global.Router.Use(cors.New(corsConfig))
-	global.Router.Use(utils.AuthMiddleware)
-
-	api.InitRoutes()
-
-	global.Router.Run()
+	//global.Router = gin.Default()
+	//
+	//// Swagger configuration
+	//url := ginSwagger.URL("/swagger/doc.json") // The url pointing to API definition
+	//global.Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+	//
+	//corsConfig := cors.DefaultConfig()
+	//corsConfig.AllowAllOrigins = true
+	//corsConfig.AllowHeaders = append(corsConfig.AllowHeaders, utils.TokenHeaderName)
+	//global.Router.Use(cors.New(corsConfig))
+	//global.Router.Use(utils.AuthMiddleware)
+	//
+	//api.InitRoutes()
+	//
+	//global.Router.Run()
 }
