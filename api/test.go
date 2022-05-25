@@ -13,8 +13,8 @@ type GetUserIdResponse struct {
 // @Summary 获取用户id
 // @Description 获取用户id
 // @ID test-get-user-id
-// @Success 200 {string} string "todo"
-// @Failure default {string} string "todo"
+// @Success 200 {object} GetUserIdResponse
+// @@Failure default {object} RegisterResponse
 // @Router /user/get-user-id [get]
 // @Security ApiKeyAuth
 func getUserIdEndpoint(c *gin.Context) {
