@@ -15,7 +15,7 @@ type GetUserIdResponse struct {
 // @ID test-get-user-id
 // @Success 200 {object} GetUserIdResponse
 // @@Failure default {object} RegisterResponse
-// @Router /user/get-user-id [get]
+// @Router /test/get-user-id [get]
 // @Security ApiKeyAuth
 func getUserIdEndpoint(c *gin.Context) {
 	c.JSON(http.StatusOK, GetUserIdResponse{
