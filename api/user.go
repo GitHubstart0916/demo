@@ -157,3 +157,44 @@ type StateResponse struct {
 func get_user_state(c *gin.Context) {
 	c.String(http.StatusOK, "1:正常登录")
 }
+
+// ShowAccount godoc
+// @Summary 忘记密码
+// @Description 忘记密码
+// @ID forget_password
+// @Accept  json
+// @Produce json
+// @Param  responseInfo body LoginRequest true "待添加信息"
+// @Success 200 "成功发送验证码"
+// @Failure default {string} string "错误信息"
+// @Router /user/forget-password [post]
+// @Security ApiKeyAuth
+
+type ForgetPswRequest struct {
+	UserId string `json:"userid" binding:"required"`
+}
+
+func forget_password(c *gin.Context) {
+	var fPsw ForgetPswRequest
+	if err := c.ShouldBindJSON(&fPsw); err != nil {
+		c.String(http.StatusBadRequest, "解析出错："+err.Error())
+		return
+	}
+	hasUserId := false
+	var UserData models.AuthUser
+	err := global.DatabaseConnection.Get(&UserData, "SELECT * FROM User WHERE userName = ?", fPsw.UserId)
+	switch err {
+	case nil:
+		hasUserId = true
+	case sql.ErrNoRows:
+		hasUserId = false
+	default:
+		panic(err)
+	}
+	if !hasUserId {
+		c.String(utils.FindNoMapErr, "用户ID未找到")
+		return
+	}
+	models.GetValidateCode([]string{UserData.Email.String})
+	c.String(http.StatusOK, "成功发送验证码")
+}

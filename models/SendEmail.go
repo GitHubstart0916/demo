@@ -3,11 +3,9 @@ package models
 import (
 	"fmt"
 	"github.com/FREE-WE-1/backend/global"
-	"github.com/gin-gonic/gin"
 	"github.com/jordan-wright/email"
 	"log"
 	"math/rand"
-	"net/http"
 	"net/smtp"
 	"time"
 )
@@ -41,36 +39,19 @@ func SendEmailValidate(em []string) (string, error) {
 	return vCode, err
 }
 
-func GetValidateCode(c *gin.Context) {
+func GetValidateCode(em []string) int32 {
 	// 获取目的邮箱
-	em := []string{c.Param("email")}
 	vCode, err := SendEmailValidate(em)
 	if err != nil {
 		log.Println(err)
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status":           400,
-			"msg":              "验证码发送失败",
-			"ERROR-CONTROLLER": err.Error(),
-		})
-		return
+		return 400
 	}
-
 	// 验证码存入redis 并设置过期时间5分钟
 	_ = global.RedisClient.Do(global.RedisClient.Context(), "set", "vCode", vCode)
 	_ = global.RedisClient.Do(global.RedisClient.Context(), "expire", "vCode", 300)
 	if err != nil {
 		log.Println(err.Error())
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status":           400,
-			"msg":              "验证码存储失败",
-			"ERROR-CONTROLLER": err.Error(),
-		})
-		return
+		return 400
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"msg":    "验证码发送成功",
-		"status": 200,
-		"vCode":  vCode,
-	})
-	return
+	return 200
 }

@@ -14,7 +14,7 @@ func InitRoutes() {
 		user.POST("/login", loginEndpoint)
 		user.POST("/logout", logoutEndpoint)
 		user.POST("/register", registerEndpoint)
-		//user.POST("/forget-password", forget_password)
+		user.POST("/forget-password", forget_password)
 		//user.POST("/reset-password", reset_password)
 		//user.GET("/get-user-state", utils.AuthMiddleware, get_user_state)
 	}
