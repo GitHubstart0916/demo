@@ -158,6 +158,10 @@ func get_user_state(c *gin.Context) {
 	c.String(http.StatusOK, "1:正常登录")
 }
 
+type ForgetPswRequest struct {
+	UserId string `json:"userid" binding:"required"`
+}
+
 // ShowAccount godoc
 // @Summary 忘记密码
 // @Description 忘记密码
@@ -169,11 +173,6 @@ func get_user_state(c *gin.Context) {
 // @Failure default {string} string "错误信息"
 // @Router /user/forget-password [post]
 // @Security ApiKeyAuth
-
-type ForgetPswRequest struct {
-	UserId string `json:"userid" binding:"required"`
-}
-
 func forget_password(c *gin.Context) {
 	var fPsw ForgetPswRequest
 	if err := c.ShouldBindJSON(&fPsw); err != nil {
