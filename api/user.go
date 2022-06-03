@@ -201,7 +201,6 @@ func forget_password(c *gin.Context) {
 type UserInfo struct {
 	Id       int    `json:"id"`
 	UserName string `json:"userName"`
-	Password string `json:"password"`
 	Email    string `json:"email"`
 }
 
@@ -222,7 +221,6 @@ func get_user_info(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, "用户信息不存在")
 	}
 	userInfo.UserName = userData.(*models.AuthUser).UserName
-	userInfo.Password = userData.(*models.AuthUser).Password
 	userInfo.Email = userData.(*models.AuthUser).Email.String
 	userInfo.Id = userData.(*models.AuthUser).Id
 	c.JSON(http.StatusOK, userInfo)
