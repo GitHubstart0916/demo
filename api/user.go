@@ -198,21 +198,32 @@ func forget_password(c *gin.Context) {
 	c.String(http.StatusOK, "成功发送验证码")
 }
 
+type UserInfo struct {
+	Id       int    `json:"id"`
+	UserName string `json:"userName"`
+	Password string `json:"password"`
+	Email    string `json:"email"`
+}
+
 // ShowAccount godoc
 // @Summary 获取用户所有信息
 // @Description 获取用户所有信息
 // @ID get_user_info
 // @Accept  json
 // @Produce json
-// @Success 200 {object} AuthUser
+// @Success 200 {object} UserInfo
 // @Failure default {string} string "错误信息"
 // @Router /user/get_user_info [post]
 // @Security ApiKeyAuth
 func get_user_info(c *gin.Context) {
-	//var userData models.AuthUser
-	UserData, exists := c.Get("UserData")
+	var userInfo UserInfo
+	userData, exists := c.Get("UserData")
 	if !exists {
 		c.JSON(http.StatusBadRequest, "用户信息不存在")
 	}
-	c.JSON(http.StatusOK, UserData)
+	userInfo.UserName = userData.(*models.AuthUser).UserName
+	userInfo.Password = userData.(*models.AuthUser).Password
+	userInfo.Email = userData.(*models.AuthUser).Email.String
+	userInfo.Id = userData.(*models.AuthUser).Id
+	c.JSON(http.StatusOK, userInfo)
 }
