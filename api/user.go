@@ -197,3 +197,22 @@ func forget_password(c *gin.Context) {
 	models.GetValidateCode([]string{UserData.Email.String})
 	c.String(http.StatusOK, "成功发送验证码")
 }
+
+// ShowAccount godoc
+// @Summary 获取用户所有信息
+// @Description 获取用户所有信息
+// @ID get_user_info
+// @Accept  json
+// @Produce json
+// @Success 200 {object} AuthUser
+// @Failure default {string} string "错误信息"
+// @Router /user/get_user_info [post]
+// @Security ApiKeyAuth
+func get_user_info(c *gin.Context) {
+	//var userData models.AuthUser
+	UserData, exists := c.Get("UserData")
+	if !exists {
+		c.JSON(http.StatusBadRequest, "用户信息不存在")
+	}
+	c.JSON(http.StatusOK, UserData)
+}
