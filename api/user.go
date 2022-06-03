@@ -212,7 +212,7 @@ type UserInfo struct {
 // @Produce json
 // @Success 200 {object} UserInfo
 // @Failure default {string} string "错误信息"
-// @Router /user/get_user_info [post]
+// @Router /user/get-user-info [post]
 // @Security ApiKeyAuth
 func get_user_info(c *gin.Context) {
 	var userInfo UserInfo
