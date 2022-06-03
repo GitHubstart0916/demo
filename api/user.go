@@ -207,7 +207,7 @@ type UserInfo struct {
 // ShowAccount godoc
 // @Summary 获取用户所有信息
 // @Description 获取用户所有信息
-// @ID get_user_info
+// @ID get-user-info
 // @Accept  json
 // @Produce json
 // @Success 200 {object} UserInfo
