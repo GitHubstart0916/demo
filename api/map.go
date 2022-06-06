@@ -44,6 +44,25 @@ func create_map(c *gin.Context) {
 	c.String(http.StatusOK, "create map successfully")
 }
 
+type FinishedCreatMapRequest struct {
+	MapName int `json:"mapname" binding:"required"`
+}
+
+func finished_creat_map(c *gin.Context) {
+	var fcmap FinishedCreatMapRequest
+	if err := c.ShouldBindJSON(&fcmap); err != nil {
+		c.String(http.StatusBadRequest, "解析出错："+err.Error())
+		return
+	}
+	var mapid int
+	err := global.DatabaseConnection.Get(&mapid, "SELECT id FROM (SELECT * FROM Map WHERE )")
+	var Max_id int
+	err = global.DatabaseConnection.Get(&Max_id, "SELECT max(id) FROM Map")
+	if err != nil {
+		panic(err)
+	}
+}
+
 type GetMapdataRequest struct {
 	MapId int `json:"mapid" binding:"required"`
 }
