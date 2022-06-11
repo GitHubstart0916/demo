@@ -45,4 +45,10 @@ func InitRoutes() {
 		//System.GET("/get-update-list", get_update_list)
 		//System.GET("/update-part", update_part)
 	}
+
+	ros := global.Router.Group("/ros")
+	ros.Use(utils.AuthRequired)
+	{
+		ros.POST("/make-dir", makeDirEndpoint)
+	}
 }
