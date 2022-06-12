@@ -23,6 +23,6 @@ RUN cp "/usr/share/zoneinfo/Asia/Shanghai" "/etc/localtime" && echo "Asia/Shangh
 
 RUN mkdir -p /data /logs
 WORKDIR /data
-EXPOSE 8000
+EXPOSE 8114
 
-CMD /app -listen 0.0.0.0:8000
+CMD /app -listen 0.0.0.0:8114
