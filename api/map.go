@@ -2,6 +2,7 @@ package api
 
 import (
 	"database/sql"
+	"fmt"
 	"github.com/FREE-WE-1/backend/global"
 	"github.com/FREE-WE-1/backend/models"
 	"github.com/FREE-WE-1/backend/utils"
@@ -123,7 +124,7 @@ func get_map_data(c *gin.Context) {
 }
 
 type OpenMapRequest struct {
-	MapId string `json:"mapid" binding:"required"`
+	MapName string `json:"mapid" binding:"required"`
 }
 
 type OpenMapResponse struct {
@@ -132,27 +133,34 @@ type OpenMapResponse struct {
 
 func open_map(c *gin.Context) {
 	//TODO 返回图片和节点信息
-	var omap OpenMapRequest
-	if err := c.ShouldBindJSON(&omap); err != nil {
+	//var omap OpenMapRequest
+	//if err := c.ShouldBindJSON(&omap); err != nil {
+	//	c.String(http.StatusBadRequest, "解析出错："+err.Error())
+	//	return
+	//}
+	//hasMap := false
+	//var MapData models.Map
+	//err := global.DatabaseConnection.Get(&MapData, "SELECT * FROM Map WHERE id = ?", omap.MapId)
+	//switch err {
+	//case nil:
+	//	hasMap = true
+	//case sql.ErrNoRows:
+	//	hasMap = false
+	//default:
+	//	panic(err)
+	//}
+	//if !hasMap {
+	//	c.JSON(utils.FindNoMapErr, "地图未找到")
+	//	return
+	//}
+	var req OpenMapRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
 		c.String(http.StatusBadRequest, "解析出错："+err.Error())
 		return
 	}
-	hasMap := false
-	var MapData models.Map
-	err := global.DatabaseConnection.Get(&MapData, "SELECT * FROM Map WHERE id = ?", omap.MapId)
-	switch err {
-	case nil:
-		hasMap = true
-	case sql.ErrNoRows:
-		hasMap = false
-	default:
-		panic(err)
-	}
-	if !hasMap {
-		c.JSON(utils.FindNoMapErr, "地图未找到")
-		return
-	}
-	//TODO:获取Nodes和文件
+
+	//ret := "http://127.0.0.1:8114/iamge/" +
+	//	c.JSON(http.StatusOK, gin.H{"message": "Files Uploaded Successfully"})
 }
 
 type ModifyMapRequest struct {
@@ -267,4 +275,38 @@ func delet_map(c *gin.Context) {
 	default:
 		panic(err)
 	}
+}
+
+type GetAllMapResponse struct {
+	Images []string `json:"images"`
+}
+
+type ImageData struct {
+	Name string
+	Path string
+}
+
+func getAllMapEndPoint(c *gin.Context) {
+	userId := c.GetInt("UserId")
+
+	var images []string
+	var allImageData []ImageData
+
+	fmt.Println(userId)
+
+	err := global.DatabaseConnection.Select(&allImageData, "SELECT name AS name, path AS path FROM Map WHERE user_id = ?", userId)
+	if err != nil {
+		panic(err)
+	}
+
+	for i := 0; i < len(allImageData); i++ {
+		images = append(images, allImageData[i].Name)
+	}
+
+	fmt.Println(allImageData)
+	fmt.Println(images)
+
+	c.JSON(http.StatusOK, GetAllMapResponse{
+		Images: images,
+	})
 }

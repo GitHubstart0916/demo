@@ -15,6 +15,7 @@ import (
 	"github.com/spf13/viper"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"net/http"
 )
 
 func ReadConfig() {
@@ -75,7 +76,11 @@ func main() {
 	global.Router.Use(cors.New(corsConfig))
 	global.Router.Use(utils.AuthMiddleware)
 
+	global.Router.Static("/image", "./images")
+
 	api.InitRoutes()
+
+	http.ListenAndServe(":8114", global.Router)
 
 	global.Router.Run()
 }

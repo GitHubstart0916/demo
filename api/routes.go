@@ -36,6 +36,7 @@ func InitRoutes() {
 		Map.POST("/modify-map", modify_map)
 		Map.POST("/get-goods", get_goods)
 		Map.GET("/delet-map", delet_map)
+		Map.GET("/get-map-list", getAllMapEndPoint)
 	}
 	System := global.Router.Group("/system")
 	System.Use(utils.AuthRequired)
