@@ -124,11 +124,11 @@ func get_map_data(c *gin.Context) {
 }
 
 type OpenMapRequest struct {
-	MapName string `json:"mapid" binding:"required"`
+	MapName string `json:"mapName" binding:"required"`
 }
 
 type OpenMapResponse struct {
-	NodeList []int32 `json:"nodelist" binding:"required"`
+	Url string `json:"url"`
 }
 
 func open_map(c *gin.Context) {
@@ -159,8 +159,18 @@ func open_map(c *gin.Context) {
 		return
 	}
 
+	var path string
+	UserId := c.GetInt("UserId")
+	err := global.DatabaseConnection.Get(&path, "SELECT path FROM Map WHERE name = ? and user_id = ?", req.MapName, UserId)
+
+	if err != nil {
+		panic(err)
+	}
 	//ret := "http://127.0.0.1:8114/iamge/" +
 	//	c.JSON(http.StatusOK, gin.H{"message": "Files Uploaded Successfully"})
+	c.JSON(http.StatusOK, OpenMapResponse{
+		Url: path,
+	})
 }
 
 type ModifyMapRequest struct {
