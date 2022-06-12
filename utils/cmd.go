@@ -1,18 +1,26 @@
 package utils
 
 import (
+	"bytes"
 	"fmt"
 	"os/exec"
 )
 
-func RunCMD(name string, arg string) bool {
-	fmt.Println(name)
-	fmt.Println(arg)
-	cmd := exec.Command(name, arg)
-	//cmd.Dir = path
-	err := cmd.Run()
-	if err != nil {
-		return true
-	}
-	return false
+const ShellToUse = "bash"
+const Path = "/home/start_0916/SE/ROS/team08-proj/robot-ros"
+const Shell = "./mk.sh"
+
+func RunCMD(arg string) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	ret := "'" + arg + "'"
+
+	command := Shell + " " + Path + " " + ret
+	cmd := exec.Command(ShellToUse, "-c", command)
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	cmd.Run()
+
+	fmt.Println(stdout.String())
 }

@@ -50,5 +50,7 @@ func InitRoutes() {
 	ros.Use(utils.AuthRequired)
 	{
 		ros.POST("/make-dir", makeDirEndpoint)
+		ros.GET("/open-serve", openServeEndpoint)
+		ros.GET("/move", moveEndpoint)
 	}
 }
