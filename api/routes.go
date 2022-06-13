@@ -30,12 +30,12 @@ func InitRoutes() {
 	Map.Use(utils.AuthRequired)
 	{
 		Map.GET("/get-user-id", getUserIdEndpoint)
-		Map.GET("/create-map", create_map)
-		Map.GET("/get-map-data", get_map_data)
+		//Map.GET("/create-map", create_map)
+		//Map.GET("/get-map-data", get_map_data)
 		Map.POST("/open-map", open_map)
-		Map.POST("/modify-map", modify_map)
-		Map.POST("/get-goods", get_goods)
-		Map.GET("/delet-map", delet_map)
+		//Map.POST("/modify-map", modify_map)
+		//Map.POST("/get-goods", get_goods)
+		//Map.GET("/delet-map", delet_map)
 		Map.GET("/get-map-list", getAllMapEndPoint)
 	}
 	System := global.Router.Group("/system")
@@ -53,5 +53,21 @@ func InitRoutes() {
 		ros.POST("/make-dir", makeDirEndpoint)
 		ros.GET("/open-serve", openServeEndpoint)
 		ros.GET("/move", moveEndpoint)
+
+		ros.GET("/creat-map", CreatMapEndpoint)
+		ros.POST("/save-map", SaveMapEndpoint)
+		ros.POST("/trans", TransEndpoint)
+
+		ros.POST("/begin-mark", BeginMarkEndpoint)
+		ros.POST("/add-node", AddNodeEndpoint)
+		ros.POST("/finish-mark", FinishMarkEndpoint)
+
+		ros.POST("/get-all-node", GetAllNodeEndpoint)
+		ros.POST("/goto", GotoEndpoint)
+		ros.POST("/get-it", GetItEndpoint)
+		ros.POST("/finish-serve", FinishServeEndpoint)
+
+		ros.POST("/begin-serve", BeginServeEndpoint)
 	}
+
 }
