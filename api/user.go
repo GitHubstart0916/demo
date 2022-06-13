@@ -249,9 +249,9 @@ func ResetPasswordEndpoint(c *gin.Context) {
 }
 
 type UserInfo struct {
-	Id       int    `json:"id"`
-	UserName string `json:"userName"`
-	Email    string `json:"email"`
+	Id       int    `db:"id"`
+	UserName string `db:"userName"`
+	Email    string `db:"email"`
 }
 
 // ShowAccount godoc
@@ -265,13 +265,18 @@ type UserInfo struct {
 // @Router /user/get-user-info [post]
 // @Security ApiKeyAuth
 func get_user_info(c *gin.Context) {
-	var userInfo UserInfo
-	userData, exists := c.Get("UserData")
-	if !exists {
-		c.JSON(http.StatusBadRequest, "用户信息不存在")
+	var userInfo models.AuthUser
+	id := c.GetInt("UserId")
+
+	err := global.DatabaseConnection.Get(&userInfo, `select * FROM User WHERE id=?`, id)
+
+	if err != nil {
+		panic(err)
 	}
-	userInfo.UserName = userData.(*models.AuthUser).UserName
-	userInfo.Email = userData.(*models.AuthUser).Email.String
-	userInfo.Id = userData.(*models.AuthUser).Id
-	c.JSON(http.StatusOK, userInfo)
+
+	c.JSON(http.StatusOK, UserInfo{
+		Id:       userInfo.Id,
+		Email:    userInfo.Email.String,
+		UserName: userInfo.UserName,
+	})
 }
