@@ -1,8 +1,10 @@
 package models
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/FREE-WE-1/backend/global"
+	"github.com/gin-gonic/gin"
 	"github.com/jordan-wright/email"
 	"log"
 	"math/rand"
@@ -39,7 +41,7 @@ func SendEmailValidate(em []string) (string, error) {
 	return vCode, err
 }
 
-func GetValidateCode(em []string) int32 {
+func GetValidateCode(c *gin.Context, id int, em []string) int32 {
 	// 获取目的邮箱
 	vCode, err := SendEmailValidate(em)
 	if err != nil {
@@ -47,8 +49,23 @@ func GetValidateCode(em []string) int32 {
 		return 400
 	}
 	// 验证码存入redis 并设置过期时间5分钟
-	_ = global.RedisClient.Do(global.RedisClient.Context(), "set", "vCode", vCode)
-	_ = global.RedisClient.Do(global.RedisClient.Context(), "expire", "vCode", 300)
+	//_ = global.RedisClient.Do(global.RedisClient.Context(), "set", "vCode", vCode)
+	//_ = global.RedisClient.Do(global.RedisClient.Context(), "expire", "vCode", 300)
+	var ret EmailToken
+	ret.Token = string(vCode)
+
+	var jsonStr []byte
+	jsonStr, err = json.Marshal(ret)
+	if err != nil {
+		panic(err) // never happens
+	}
+	err = global.RedisClient.Set(c, string(id), jsonStr, 0).Err()
+	if err != nil {
+		panic(err)
+	}
+
+	//global.RedisClient.Set(c, string(id), vCode, 0)
+	//c.Set("email-token", string(vCode))
 	if err != nil {
 		log.Println(err.Error())
 		return 400
